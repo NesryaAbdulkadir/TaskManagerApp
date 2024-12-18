@@ -47,3 +47,55 @@ form.addEventListener("submit", (e) => {
   priority.value = "low";
   status.value = "Todo";
 });
+
+// drag and drop
+
+const addDragnDropListeners = (e) => {
+  const draggableItems = document.querySelectorAll(".task");
+  draggableItems
+    .forEach((task) => {
+      task.addEventListener("dragstart", handleDragStart);
+      task.addEventListener("dragover", handleDragOver);
+      task.addEventListener("drop", handleDrop);
+    })
+    [(todoTasks, doingTasks, doneTasks)].forEach((container) => {
+      container.addEventListener("dragover", handleDragOver);
+      container.addEventListener("drop", handleContainerDrop);
+    });
+};
+const handleDragStart = (e) => {
+  e.dataTransfer.setData("text/plain", e.target.id);
+};
+const handleDragOver = (e) => {
+  e.preventDefault();
+};
+
+const handleDrop = (e) => {
+  e.preventDefault();
+  const index = e.dataTransfer.getData("text/plain");
+  const task = tasks[index];
+  updateTaskStatus(task);
+};
+
+const handleContainerDrop = (e) => {
+  const index = e.dataTransfer.getData("text/plain");
+  const tasks = tasks[index];
+  if (e.target.closest("ul")) {
+    const newStatus = e.target.closest("div").querySelector("h2").innerText;
+    tasks.status = newStatus;
+    localStorage.setItem("tasks", JSON.stringify(tasks));
+    renderTasks();
+  }
+};
+const updateTaskStatus = (task) => {
+  const newStatus =
+    task.status === "Todo"
+      ? "Doing"
+      : task.status === "Doing"
+      ? "Done"
+      : "Todo";
+  task.status = newStatus;
+  localStorage.setItem("tasks", JSON.stringify(tasks));
+  renderTasks();
+};
+renderTasks();

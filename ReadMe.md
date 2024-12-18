@@ -22,7 +22,7 @@ A task management board that allows users to add tasks, set priorities, and mark
 
 👤 **Nesrya**
 
-- Github: [@nesria](https://github.com/NesryaAbdulkadir)
+- Github: [@NesryaAbdulkadir](https://github.com/NesryaAbdulkadir)
 
 ## 🤝 Contributing
 
