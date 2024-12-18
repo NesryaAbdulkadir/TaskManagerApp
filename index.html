@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script src="script.js" defer></script>
+    <link rel="stylesheet" href="style.css" />
+    <title>Task Management Board</title>
+  </head>
+  <body>
+    <div class="container">
+      <form action="" class="form" id="form">
+        <input type="text" name="" id="input" placeholder="Enter task" />
+        <div class="form-group">
+          <select name="priority" id="priority">
+            <option value="low">Low priority</option>
+            <option value="medium">Medium priority</option>
+            <option value="high">High priority</option>
+            <option value="urgent">Urgent</option>
+          </select>
+          <select name="status" id="status">
+            <option value="Todo">Todo</option>
+            <option value="Doing">Doing</option>
+            <option value="Done">Done</option>
+          </select>
+        </div>
+        <button type="submit">Add Task</button>
+      </form>
+    </div>
+    <div class="tasks-container">
+      <div class="tasks-container-header">
+        <h1>Tasks</h1>
+      </div>
+
+      <div class="tasks">
+        <div class="todo-container">
+          <h2>Todo</h2>
+          <ul id="todo-tasks"></ul>
+        </div>
+        <div class="todo-container">
+          <h2>Doing</h2>
+          <ul id="doing-tasks"></ul>
+        </div>
+        <div class="todo-container">
+          <h2>Done</h2>
+          <ul id="done-tasks"></ul>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>
