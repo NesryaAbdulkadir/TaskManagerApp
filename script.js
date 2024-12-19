@@ -54,6 +54,9 @@ const renderTasks = () => {
 
   // Call to add drag-and-drop listeners
   addDragnDropListeners();
+
+  // Call to add delete event listener
+  deleteEventListener();
 };
 
 // Function to handle form submission
@@ -75,6 +78,18 @@ form.addEventListener("submit", (e) => {
   priority.value = "Low priority";
   status.value = "Todo";
 });
+
+// Function to add delete event listener
+const deleteEventListener = () => {
+  const deleteBtns = document.querySelectorAll(".delete");
+  console.log("deleteBtns", deleteBtns);
+  deleteBtns.forEach((btn) => {
+    btn.addEventListener("click", (e) => {
+      const index = e.target.closest("li").id;
+      deleteTask(index);
+    });
+  });
+};
 
 // Drag and drop event handlers
 const handleDragStart = (e) => {
@@ -108,5 +123,12 @@ const handleContainerDrop = (e) => {
   container.classList.remove("drag-over");
 };
 
+// Function to delete a task
+const deleteTask = (index) => {
+  tasks.splice(index, 1);
+  localStorage.setItem("tasks", JSON.stringify(tasks));
+  renderTasks();
+};
 // Initial rendering of tasks
+
 renderTasks();
