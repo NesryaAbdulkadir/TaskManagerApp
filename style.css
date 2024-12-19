@@ -3,6 +3,16 @@
   padding: 0;
   box-sizing: border-box;
 }
+body {
+  font-family: Arial, Helvetica, sans-serif;
+}
+.drag-over {
+  border: 2px dashed #949494;
+  padding: 10px;
+  border-radius: 20px;
+  background-color: #0000001d;
+  margin: 20px;
+}
 .tasks {
   display: flex;
   justify-content: space-between;
@@ -13,6 +23,17 @@
   width: 90%;
   text-align: center;
 }
+
+.task-header {
+  display: flex;
+  justify-content: space-between;
+}
+.task-header #delete {
+  cursor: pointer;
+  font-size: large;
+  font-weight: bold;
+  padding: 10px;
+}
 .container {
   width: 80%;
   margin: auto;
@@ -21,6 +42,12 @@
   justify-content: center;
   align-items: center;
   text-align: center;
+}
+#todo-tasks,
+#doing-tasks,
+#done-tasks {
+  height: max-content;
+  padding-bottom: 150px;
 }
 .tasks-container {
   width: 90%;
@@ -120,12 +147,12 @@ button:hover {
 .task-priority.urgent {
   background-color: rgba(255, 0, 0, 0.249);
 }
-.task-priority.medium {
+.task-priority.medium-priority {
   background-color: rgba(255, 166, 0, 0.249);
 }
-.task-priority.high {
+.task-priority.high-priority {
   background-color: rgba(255, 0, 238, 0.249);
 }
-.task-priority.low {
+.task-priority.low-priority {
   background-color: rgba(0, 128, 0, 0.249);
 }

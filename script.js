@@ -8,14 +8,39 @@ const doneTasks = document.getElementById("done-tasks");
 
 let tasks = JSON.parse(localStorage.getItem("tasks")) || [];
 
+// Function to add drag-and-drop listeners
+const addDragnDropListeners = () => {
+  const draggableItems = document.querySelectorAll(".task");
+
+  draggableItems.forEach((task) => {
+    task.addEventListener("dragstart", handleDragStart);
+  });
+
+  [todoTasks, doingTasks, doneTasks].forEach((container) => {
+    container.addEventListener("dragenter", () => handleDragEnter(container));
+    container.addEventListener("dragover", handleDragOver);
+    container.addEventListener("dragleave", () => handleDragLeave(container));
+    container.addEventListener("drop", handleContainerDrop);
+  });
+};
+
+const slugify = (text) => {
+  return text.toString().toLowerCase().replace(/\s+/g, "-");
+};
+
+// Function to render tasks
 const renderTasks = () => {
   todoTasks.innerHTML = "";
   doingTasks.innerHTML = "";
   doneTasks.innerHTML = "";
-  tasks.forEach((task) => {
-    const taskHtml = `<li class="task" draggable="true">
-        <h3 class="task-title">${task.title}</h3>
-        <p class="task-priority ${task.priority}"> ${task.priority}</p>
+
+  tasks.forEach((task, index) => {
+    const taskHtml = `<li class="task" id="${index}" draggable="true">
+    <div class="task-header">
+    <h3 class="task-title">${task.title}</h3>
+    <span id="delete" class="delete">x</span>  
+    </div>
+        <p class="task-priority ${slugify(task.priority)}"> ${task.priority}</p>
     </li>`;
 
     if (task.status === "Todo") {
@@ -26,9 +51,12 @@ const renderTasks = () => {
       doneTasks.innerHTML += taskHtml;
     }
   });
-};
-renderTasks();
 
+  // Call to add drag-and-drop listeners
+  addDragnDropListeners();
+};
+
+// Function to handle form submission
 form.addEventListener("submit", (e) => {
   e.preventDefault();
   const task = {
@@ -44,58 +72,41 @@ form.addEventListener("submit", (e) => {
   localStorage.setItem("tasks", JSON.stringify(tasks));
   renderTasks();
   input.value = "";
-  priority.value = "low";
+  priority.value = "Low priority";
   status.value = "Todo";
 });
 
-// drag and drop
-
-const addDragnDropListeners = (e) => {
-  const draggableItems = document.querySelectorAll(".task");
-  draggableItems
-    .forEach((task) => {
-      task.addEventListener("dragstart", handleDragStart);
-      task.addEventListener("dragover", handleDragOver);
-      task.addEventListener("drop", handleDrop);
-    })
-    [(todoTasks, doingTasks, doneTasks)].forEach((container) => {
-      container.addEventListener("dragover", handleDragOver);
-      container.addEventListener("drop", handleContainerDrop);
-    });
-};
+// Drag and drop event handlers
 const handleDragStart = (e) => {
   e.dataTransfer.setData("text/plain", e.target.id);
 };
+
 const handleDragOver = (e) => {
   e.preventDefault();
 };
 
-const handleDrop = (e) => {
-  e.preventDefault();
-  const index = e.dataTransfer.getData("text/plain");
-  const task = tasks[index];
-  updateTaskStatus(task);
+const handleDragEnter = (container) => {
+  container.classList.add("drag-over");
+};
+
+const handleDragLeave = (container) => {
+  container.classList.remove("drag-over");
 };
 
 const handleContainerDrop = (e) => {
+  e.preventDefault();
   const index = e.dataTransfer.getData("text/plain");
-  const tasks = tasks[index];
-  if (e.target.closest("ul")) {
+  const task = tasks[index];
+  const container = e.target.closest("ul");
+
+  if (task) {
     const newStatus = e.target.closest("div").querySelector("h2").innerText;
-    tasks.status = newStatus;
+    task.status = newStatus;
     localStorage.setItem("tasks", JSON.stringify(tasks));
     renderTasks();
   }
+  container.classList.remove("drag-over");
 };
-const updateTaskStatus = (task) => {
-  const newStatus =
-    task.status === "Todo"
-      ? "Doing"
-      : task.status === "Doing"
-      ? "Done"
-      : "Todo";
-  task.status = newStatus;
-  localStorage.setItem("tasks", JSON.stringify(tasks));
-  renderTasks();
-};
+
+// Initial rendering of tasks
 renderTasks();
